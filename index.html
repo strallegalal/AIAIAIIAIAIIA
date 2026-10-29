@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<!--
+  ============================================================
+  MINHA LOJA | HTML + CSS + INTRODUÇÃO AO JAVASCRIPT
+  Autor: Professor Renan
+  ============================================================
+
+  O QUE É ESTE ARQUIVO?
+  Este é o arquivo principal (index.html) de uma página de loja.
+  Ele define a ESTRUTURA da página (HTML) e, no final, traz uma
+  introdução ao JAVASCRIPT, que dá COMPORTAMENTO à página.
+
+  COMO USAR:
+  1. Deixe os arquivos index.html e style.css na MESMA pasta.
+  2. Dê dois cliques no index.html para abrir no navegador.
+  3. Aperte F12 e abra a aba "Console" para ver as mensagens
+     que o JavaScript escreve.
+
+  AS TRÊS CAMADAS DE UM SITE:
+  - HTML       = o esqueleto (o que existe na página)
+  - CSS        = a roupa (como a página parece)
+  - JAVASCRIPT = os músculos e o cérebro (o que a página FAZ)
+
+  O QUE FOI CORRIGIDO EM RELAÇÃO À VERSÃO ORIGINAL DA AULA:
+  1. A etiqueta <meta name="viewport"> estava quebrada
+     (o "content" estava solto, fora dela). Agora está correta.
+  2. A <div class="produtos"> não estava fechada, e as seções
+     "sobre" e "contato" ficaram dentro dela por engano.
+  3. O id="contato" aparecia DUAS vezes. Um id deve ser ÚNICO.
+  4. O botão "comprar" estava dentro de um comentário e com
+     erros de escrita. Agora funciona com JavaScript.
+  5. O texto do rodapé começava com "&desde", um símbolo HTML
+     inválido. Agora usa &copy; (o símbolo ©).
+  6. O <textarea> tinha espaços e quebras de linha dentro dele,
+     o que escondia o texto de exemplo (placeholder).
+-->
+
+<!-- Define o idioma da página: português do Brasil -->
+<html lang="pt-br">
+
+<!-- ==========================================================
+     HEAD: informações INVISÍVEIS ao usuário, que servem
+     para configurar a página
+     ========================================================== -->
+<head>
+  <!-- Define o conjunto de caracteres: permite acentos e ç -->
+  <meta charset="UTF-8">
+
+  <!-- Faz a página se adaptar à largura do celular.
+       width=device-width: usa a largura real da tela.
+       initial-scale=1.0: começa sem zoom. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Título que aparece na aba do navegador -->
+  <title>Minha Loja | Patati e Patata</title>
+
+  <!-- Liga o arquivo de estilos (CSS) a esta página.
+       rel="stylesheet": informa que o arquivo é uma folha de estilos.
+       href="style.css": o nome do arquivo (na mesma pasta). -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<!-- ==========================================================
+     BODY: tudo o que aparece na tela
+     ========================================================== -->
+<body>
+
+  <!-- ========================================================
+       CABEÇALHO DO SITE
+       A tag <header> indica a parte de cima da página.
+       ======================================================== -->
+  <header>
+    <!-- Div que agrupa o nome e o slogan da loja.
+         class="logo": nome usado pelo CSS para estilizar este bloco -->
+    <div class="logo">
+      <!-- h2: título de nível 2 (nome da loja) -->
+      <h2>Minha loja</h2>
+      <!-- p: parágrafo (o slogan) -->
+      <p>Produtos para você</p>
+    </div>
+  </header>
+
+  <!-- ========================================================
+       MENU DE NAVEGAÇÃO
+       A tag <nav> agrupa os links principais do site.
+       ======================================================== -->
+  <nav>
+    <!--
+      A tag <a> cria um link.
+      href define para onde o usuário será levado.
+      href="#produtos" é um LINK INTERNO: leva até o elemento que
+      tem id="produtos" na mesma página.
+      (Se fosse um site externo, usaríamos target="_blank"
+      para abrir em uma nova aba.)
+    -->
+    <div class="menu">
+      <a href="#inicio">Início</a>
+      <a href="#produtos">Produtos</a>
+      <a href="#javascript">JavaScript</a>
+      <a href="#sobre">Sobre</a>
+      <a href="#contato">Contato</a>
+    </div>
+
+    <!-- Grupo da direita do menu: tema e carrinho -->
+    <div class="acoes">
+      <!-- Botão que liga e desliga o modo escuro (o JavaScript controla).
+           id="botao-tema": nome único para o JavaScript encontrar o botão.
+           type="button": avisa que é um botão comum (não envia formulário). -->
+      <button id="botao-tema" class="botao-secundario" type="button">Modo escuro</button>
+
+      <!-- Resumo do carrinho. O JavaScript atualiza os dois números.
+           <span> é uma etiqueta "em linha", ótima para trocar só um pedaço do texto. -->
+      <p class="carrinho">
+        Carrinho: <span id="contador-carrinho">0</span> item(ns) |
+        <span id="total-carrinho">R$ 0,00</span>
+      </p>
+    </div>
+  </nav>
+
+  <!-- ========================================================
+       CONTEÚDO PRINCIPAL
+       A tag <main> guarda o conteúdo único da página.
+       Só pode existir UMA <main> por página.
+       ======================================================== -->
+  <main>
+
+    <!-- ------------------------------------------------------
+         SEÇÃO INICIAL (banner de boas-vindas)
+         <section> divide a página em partes com um assunto.
+         id="inicio": é o destino do link "#inicio" do menu.
+         ------------------------------------------------------ -->
+    <section id="inicio">
+      <div class="banner">
+        <!-- Caixa de texto por cima das listras do banner -->
+        <div class="banner-texto">
+          <h2>Bem-vindo à loja</h2>
+          <p>Confira nossos produtos</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ------------------------------------------------------
+         SEÇÃO DE PRODUTOS
+         ------------------------------------------------------ -->
+    <section id="produtos">
+      <h2>Nossos produtos</h2>
+
+      <!-- Div que guarda TODOS os produtos lado a lado.
+           O CSS usa Flexbox aqui para organizar os cartões. -->
+      <div class="produtos">
+
+        <!-- ===== PRODUTO 1 =====
+             <article> representa um item independente (um cartão de produto).
+             data-id="1": guarda o número do produto. O JavaScript lê
+             esse valor para saber QUAL produto foi clicado. -->
+        <article class="produto" data-id="1">
+          <!-- <img> mostra uma imagem.
+               src: o endereço da imagem. Aqui usamos uma imagem desenhada
+               no próprio código. Para usar uma foto sua, troque por
+               src="imagens/produto1.jpg".
+               alt: texto que descreve a imagem (acessibilidade e imagem quebrada). -->
+          <img
+            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 140'%3E%3Crect width='200' height='140' fill='%23f5b82e'/%3E%3Ctext x='100' y='92' font-size='64' text-anchor='middle'%3E%F0%9F%A4%A1%3C/text%3E%3C/svg%3E"
+            alt="Desenho de um palhaço em fundo amarelo">
+
+          <!-- h3: título de nível 3 (nome do produto) -->
+          <h3>Patati Patata</h3>
+
+          <!-- class="preco": o CSS deixa o preço em destaque -->
+          <p class="preco">R$ 1400,00</p>
+
+          <!-- Botões do produto.
+               class="botao-comprar": o JavaScript procura todos os botões
+               com esta classe para adicionar o produto ao carrinho.
+               data-id: repete o número do produto. -->
+          <div class="botoes">
+            <button class="botao-comprar" type="button" data-id="1">Comprar</button>
+            <button class="botao-detalhes botao-secundario" type="button" data-id="1">Detalhes</button>
+          </div>
+        </article>
+
+        <!-- ===== PRODUTO 2 =====
+             Mesma estrutura do produto 1. Para criar um novo produto,
+             copie um bloco inteiro de <article> e troque os dados. -->
+        <article class="produto" data-id="2">
+          <img
+            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 140'%3E%3Crect width='200' height='140' fill='%2389c4f4'/%3E%3Ctext x='100' y='92' font-size='64' text-anchor='middle'%3E%F0%9F%94%B4%3C/text%3E%3C/svg%3E"
+            alt="Desenho de uma bolinha vermelha em fundo azul">
+          <h3>Nariz de palhaço</h3>
+          <p class="preco">R$ 25,90</p>
+          <div class="botoes">
+            <button class="botao-comprar" type="button" data-id="2">Comprar</button>
+            <button class="botao-detalhes botao-secundario" type="button" data-id="2">Detalhes</button>
+          </div>
+        </article>
+
+        <!-- ===== PRODUTO 3 ===== -->
+        <article class="produto" data-id="3">
+          <img
+            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 140'%3E%3Crect width='200' height='140' fill='%23f4a6a0'/%3E%3Ctext x='100' y='92' font-size='64' text-anchor='middle'%3E%F0%9F%8E%A9%3C/text%3E%3C/svg%3E"
+            alt="Desenho de uma cartola em fundo rosa">
+          <h3>Cartola mágica</h3>
+          <p class="preco">R$ 89,90</p>
+          <div class="botoes">
+            <button class="botao-comprar" type="button" data-id="3">Comprar</button>
+            <button class="botao-detalhes botao-secundario" type="button" data-id="3">Detalhes</button>
+          </div>
+        </article>
+
+      </div>
+      <!-- Fim da div "produtos". (Na versão original, esta div ficava aberta.) -->
+    </section>
+
+    <!-- ------------------------------------------------------
+         SEÇÃO: INTRODUÇÃO AO JAVASCRIPT
+         Aqui você aprende o que é o JavaScript e pode testá-lo.
+         ------------------------------------------------------ -->
+    <section id="javascript">
+      <h2>Introdução ao JavaScript</h2>
+
+      <div class="aula-js">
+        <p>
+          O <strong>JavaScript</strong> é a linguagem que faz uma página
+          <strong>reagir</strong>: um clique, um texto digitado, um carrinho
+          que soma os valores. Ele roda dentro do navegador.
+        </p>
+
+        <!-- <ul> cria uma lista com marcadores; <li> é cada item da lista -->
+        <ul>
+          <li><strong>HTML</strong> é o esqueleto: o que existe na página.</li>
+          <li><strong>CSS</strong> é a roupa: como a página parece.</li>
+          <li><strong>JavaScript</strong> são os músculos: o que a página faz.</li>
+        </ul>
+
+        <!-- <code> mostra um trecho de código com fonte especial -->
+        <p>
+          Atenção: <strong>Java</strong> e <strong>JavaScript</strong> são
+          linguagens diferentes. Aqui estudamos o JavaScript.
+          Abra o Console (tecla <code>F12</code>) para ver as mensagens
+          que ele escreve com <code>console.log()</code>.
+        </p>
+
+        <!-- ===== TESTE 1: contador de cliques ===== -->
+        <div class="demo">
+          <h3>Teste 1: contar cliques</h3>
+          <button id="botao-demo" type="button">Clique em mim</button>
+          <!-- O JavaScript troca o texto deste parágrafo a cada clique -->
+          <p id="resultado-demo">Nenhum clique ainda.</p>
+        </div>
+
+        <!-- ===== TESTE 2: ler o que o usuário digita ===== -->
+        <div class="demo">
+          <h3>Teste 2: ler um texto digitado</h3>
+          <!-- label: o rótulo do campo.
+               for="campo-nome-demo": liga o rótulo ao campo com esse id.
+               Assim, clicar no rótulo seleciona o campo. -->
+          <label for="campo-nome-demo">Qual é o seu nome?</label>
+          <input type="text" id="campo-nome-demo" placeholder="Digite seu nome">
+          <button id="botao-saudacao" type="button">Cumprimentar</button>
+          <p id="resultado-saudacao"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ------------------------------------------------------
+         SEÇÃO: SOBRE A LOJA
+         ------------------------------------------------------ -->
+    <section id="sobre">
+      <div class="sobre">
+        <h2>Sobre a loja</h2>
+        <p>Somos uma loja que vende Patati e Patata.</p>
+      </div>
+    </section>
+
+    <!-- ------------------------------------------------------
+         SEÇÃO: CONTATO (informações + formulário)
+         Na versão original existiam duas seções com id="contato".
+         Agora há apenas UMA, que reúne tudo.
+         ------------------------------------------------------ -->
+    <section id="contato">
+      <div class="contato">
+        <h2>Contato</h2>
+        <p>E-mail: patatipata@circo.com</p>
+      </div>
+
+      <h2>Entre em contato</h2>
+
+      <!-- <form> agrupa os campos para enviar dados.
+           action="#": para onde enviar (aqui, para lugar nenhum: é só treino).
+           method="post": forma de envio dos dados.
+           id="formulario-contato": o JavaScript usa para validar o envio. -->
+      <form action="#" method="post" id="formulario-contato">
+
+        <!-- CAMPO: NOME
+             type="text": campo de texto simples.
+             id: nome único do campo (liga com o label).
+             name: nome do dado quando o formulário é enviado.
+             placeholder: texto de exemplo, que some ao digitar.
+             required: obriga o preenchimento. -->
+        <label for="nome">Nome</label>
+        <input type="text" id="nome" name="nome" placeholder="Digite seu nome" required>
+
+        <!-- CAMPO: TELEFONE
+             type="tel": campo para telefone (teclado numérico no celular). -->
+        <label for="telefone">Telefone</label>
+        <input type="tel" id="telefone" name="telefone" placeholder="(00) 00000-0000">
+
+        <!-- CAMPO: E-MAIL
+             type="email": o navegador confere se existe um @. -->
+        <label for="email">E-mail</label>
+        <input type="email" id="email" name="email" placeholder="Digite seu e-mail" required>
+
+        <!-- CAMPO: ASSUNTO
+             <select> cria uma lista de opções (menu suspenso).
+             Cada <option> é uma opção.
+             value é o dado enviado; o texto entre as tags é o que se vê. -->
+        <label for="assunto">Assunto</label>
+        <select id="assunto" name="assunto">
+          <option value="duvida">Dúvida</option>
+          <option value="produto">Produto</option>
+          <option value="comprar">Comprar</option>
+          <option value="outro">Outro</option>
+        </select>
+
+        <!-- CAMPO: MENSAGEM
+             <textarea> é um campo de texto com várias linhas.
+             rows="5": altura de 5 linhas.
+             Importante: abrir e fechar a tag na mesma linha, sem espaços
+             dentro, para o placeholder aparecer corretamente. -->
+        <label for="mensagem">Mensagem</label>
+        <textarea id="mensagem" name="mensagem" rows="5" placeholder="Digite sua mensagem" required></textarea>
+
+        <!-- BOTÃO DE ENVIAR
+             type="submit": ao clicar, dispara o envio do formulário.
+             O JavaScript intercepta esse envio para validar os dados. -->
+        <button type="submit">Enviar mensagem</button>
+
+        <!-- Parágrafo onde o JavaScript escreve a resposta (erro ou sucesso).
+             aria-live="polite": leitores de tela avisam a mudança. -->
+        <p id="mensagem-formulario" aria-live="polite"></p>
+      </form>
+    </section>
+
+  </main>
+  <!-- Fim da <main>. -->
+
+  <!-- ========================================================
+       RODAPÉ
+       O <footer> fica FORA da <main>.
+       ======================================================== -->
+  <footer>
+    <div class="rodape">
+      <!-- &copy; é o código HTML do símbolo © -->
+      <p>&copy; Desde 1905 | Patati e Patata</p>
+    </div>
+  </footer>
+
+  <!-- ========================================================
+       JANELA DE DETALHES (modal)
+       Fica escondida (o CSS usa display: none) e só aparece quando
+       o JavaScript adiciona a classe "aberto".
+       role="dialog": avisa aos leitores de tela que é uma janela.
+       aria-modal="true": o resto da página fica em segundo plano.
+       aria-labelledby: aponta para o título da janela.
+       ======================================================== -->
+  <div id="modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-titulo">
+    <div class="modal-conteudo">
+      <h3 id="modal-titulo">Produto</h3>
+      <p id="modal-descricao"></p>
+      <p id="modal-preco" class="preco"></p>
+      <div class="botoes">
+        <button id="modal-comprar" type="button">Adicionar ao carrinho</button>
+        <button id="modal-fechar" class="botao-secundario" type="button">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Aviso rápido (aparece por alguns segundos ao comprar) -->
+  <div id="aviso" class="aviso" role="status" aria-live="polite"></div>
+
+
+  <!-- ========================================================
+       JAVASCRIPT
+       A tag <script> contém o código JavaScript.
+       Ela fica no FINAL do <body> de propósito: o navegador lê a
+       página de cima para baixo. Se o script viesse antes, ele
+       tentaria encontrar elementos que ainda não existem.
+       ======================================================== -->
+  <script>
+
+    // ==========================================================
+    // PASSO 1: O PRIMEIRO COMANDO
+    // ==========================================================
+    // Duas barras (//) criam um COMENTÁRIO: o computador ignora,
+    // e serve para explicar o código para as pessoas.
+    //
+    // console.log() escreve uma mensagem no Console (tecla F12).
+    // É assim que o programador "conversa" com o computador.
+    console.log('Olá! O JavaScript da Minha Loja foi carregado com sucesso.');
+
+
+    // ==========================================================
+    // PASSO 2: VARIÁVEIS E TIPOS DE DADOS
+    // ==========================================================
+    // Uma VARIÁVEL é uma caixa com etiqueta que guarda um valor.
+    //
+    // const = caixa lacrada: o valor NÃO muda depois.
+    // let   = caixa comum: o valor PODE mudar depois.
+    // Regra de ouro: use const sempre que puder; use let só quando
+    // o valor precisar mudar.
+
+    // Texto (string): sempre entre aspas.
+    const nomeDaLoja = 'Minha Loja';
+
+    // Número (number): sem aspas. Será alterado, então usamos let.
+    let quantidadeNoCarrinho = 0;
+    let totalNoCarrinho = 0;
+
+    // Verdadeiro ou falso (boolean): só aceita true ou false.
+    const lojaAberta = true;
+
+    // Template string: texto entre crases (`) que aceita variáveis
+    // dentro de ${ }. Muito mais fácil que juntar textos com "+".
+    console.log(`A loja "${nomeDaLoja}" está aberta? ${lojaAberta}`);
+
+    // typeof mostra o TIPO de um valor (string, number, boolean...).
+    console.log(typeof nomeDaLoja, typeof quantidadeNoCarrinho, typeof lojaAberta);
+
+
+    // ==========================================================
+    // PASSO 3: SELECIONAR ELEMENTOS DA PÁGINA (DOM)
+    // ==========================================================
+    // O DOM é a página HTML transformada em objetos que o
+    // JavaScript consegue encontrar e alterar.
+    //
+    // document.querySelector('#nome') procura UM elemento.
+    //   '#' procura por id; '.' procura por classe.
+    // document.querySelectorAll('.classe') procura TODOS.
+
+    // Elementos do carrinho
+    const contadorCarrinho = document.querySelector('#contador-carrinho');
+    const totalCarrinho = document.querySelector('#total-carrinho');
+    const aviso = document.querySelector('#aviso');
+
+    // Botões dos produtos (querySelectorAll devolve uma lista)
+    const botoesComprar = document.querySelectorAll('.botao-comprar');
+    const botoesDetalhes = document.querySelectorAll('.botao-detalhes');
+
+    // Elementos da janela de detalhes (modal)
+    const modal = document.querySelector('#modal');
+    const modalTitulo = document.querySelector('#modal-titulo');
+    const modalDescricao = document.querySelector('#modal-descricao');
+    const modalPreco = document.querySelector('#modal-preco');
+    const modalComprar = document.querySelector('#modal-comprar');
+    const modalFechar = document.querySelector('#modal-fechar');
+
+    // Botão do modo escuro
+    const botaoTema = document.querySelector('#botao-tema');
+
+    // Elementos da seção de introdução (testes 1 e 2)
+    const botaoDemo = document.querySelector('#botao-demo');
+    const resultadoDemo = document.querySelector('#resultado-demo');
+    const campoNomeDemo = document.querySelector('#campo-nome-demo');
+    const botaoSaudacao = document.querySelector('#botao-saudacao');
+    const resultadoSaudacao = document.querySelector('#resultado-saudacao');
+
+    // Elementos do formulário
+    const formulario = document.querySelector('#formulario-contato');
+    const campoNome = document.querySelector('#nome');
+    const mensagemFormulario = document.querySelector('#mensagem-formulario');
+
+
+    // ==========================================================
+    // PASSO 4: ARRAY E OBJETOS (OS DADOS DA LOJA)
+    // ==========================================================
+    // Um ARRAY é uma lista, escrita entre colchetes [ ].
+    // Um OBJETO é uma ficha com propriedades, escrita entre
+    // chaves { } no formato nome: valor.
+    // Aqui temos um array de objetos: uma lista de fichas de produto.
+    //
+    // O "id" de cada produto é o mesmo número usado no data-id do HTML.
+    const produtos = [
+      {
+        id: 1,
+        nome: 'Patati Patata',
+        preco: 1400,
+        descricao: 'A dupla de palhaços mais famosa do circo, em edição de colecionador.'
+      },
+      {
+        id: 2,
+        nome: 'Nariz de palhaço',
+        preco: 25.9,
+        descricao: 'Nariz vermelho de espuma, macio e ideal para festas e apresentações.'
+      },
+      {
+        id: 3,
+        nome: 'Cartola mágica',
+        preco: 89.9,
+        descricao: 'Cartola preta para truques de mágica, com forro de cetim.'
+      }
+    ];
+
+
+    // ==========================================================
+    // PASSO 5: FUNÇÕES
+    // ==========================================================
+    // Uma FUNÇÃO é um bloco de código com nome, que você escreve
+    // uma vez e usa quantas vezes quiser.
+    //   function nome(parametros) { ... }
+    // Parâmetros são os dados que a função recebe.
+    // return devolve um resultado para quem chamou a função.
+
+    // --- Função 1: transforma um número em preço (ex.: 1400 vira R$ 1.400,00)
+    function formatarPreco(valor) {
+      // toLocaleString formata o número no padrão do Brasil.
+      return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    }
+
+    // --- Função 2: mostra um aviso rápido na tela
+    // Esta variável guarda o "cronômetro" do aviso. Usamos let porque
+    // o valor muda a cada aviso.
+    let temporizadorAviso;
+
+    function mostrarAviso(texto) {
+      // Escreve o texto dentro do elemento de aviso
+      aviso.textContent = texto;
+      // Adiciona a classe "visivel": o CSS faz o aviso aparecer
+      aviso.classList.add('visivel');
+      // Cancela um cronômetro antigo, se existir (evita sumir cedo demais)
+      clearTimeout(temporizadorAviso);
+      // setTimeout executa a função depois de um tempo (2500 ms = 2,5 s)
+      temporizadorAviso = setTimeout(() => {
+        // Remove a classe: o aviso desaparece
+        aviso.classList.remove('visivel');
+      }, 2500);
+    }
+
+    // --- Função 3: atualiza o resumo do carrinho na tela
+    function atualizarCarrinho() {
+      // textContent troca o texto de um elemento
+      contadorCarrinho.textContent = quantidadeNoCarrinho;
+      totalCarrinho.textContent = formatarPreco(totalNoCarrinho);
+    }
+
+    // --- Função 4: coloca um produto no carrinho
+    function adicionarAoCarrinho(idDoProduto) {
+      // find percorre o array e devolve o PRIMEIRO produto cujo id combina.
+      // "item => item.id === idDoProduto" é uma arrow function (função curta).
+      // === compara valor E tipo.
+      const produto = produtos.find(item => item.id === idDoProduto);
+
+      // Condicional: se não achou o produto (valor "undefined"), avisa e para.
+      // O "!" significa "não".
+      if (!produto) {
+        console.log('Produto não encontrado: ' + idDoProduto);
+        return; // return sem valor encerra a função aqui
+      }
+
+      // ++ soma 1 à variável.
+      quantidadeNoCarrinho++;
+      // += soma o preço ao total (é o mesmo que total = total + preço).
+      totalNoCarrinho += produto.preco;
+
+      // Mostra os novos valores na tela e avisa o usuário
+      atualizarCarrinho();
+      mostrarAviso(`${produto.nome} foi adicionado ao carrinho!`);
+
+      // Registra no console para o programador acompanhar
+      console.log(`Carrinho: ${quantidadeNoCarrinho} item(ns), total ${formatarPreco(totalNoCarrinho)}`);
+    }
+
+
+    // ==========================================================
+    // PASSO 6: EVENTOS (REAGIR AO CLIQUE)
+    // ==========================================================
+    // Um EVENTO é algo que acontece na página (clique, tecla, envio).
+    // addEventListener('evento', função) significa:
+    //   "quando este evento acontecer, execute esta função".
+    // A função entregue se chama CALLBACK.
+
+    // forEach repete o código para CADA botão da lista.
+    botoesComprar.forEach((botao) => {
+      botao.addEventListener('click', () => {
+        // dataset.id lê o valor de data-id do HTML.
+        // Ele chega como TEXTO, então convertemos para número com Number().
+        const idDoProduto = Number(botao.dataset.id);
+        adicionarAoCarrinho(idDoProduto);
+      });
+    });
+
+
+    // ==========================================================
+    // PASSO 7: JANELA DE DETALHES (MODAL)
+    // ==========================================================
+    // Guarda qual produto está aberto na janela.
+    // null significa "nenhum valor" (a janela começa fechada).
+    let produtoAberto = null;
+
+    function abrirModal(idDoProduto) {
+      const produto = produtos.find(item => item.id === idDoProduto);
+      if (!produto) {
+        return;
+      }
+
+      // Guarda o produto atual
+      produtoAberto = produto;
+
+      // Preenche a janela com os dados do produto
+      modalTitulo.textContent = produto.nome;
+      modalDescricao.textContent = produto.descricao;
+      modalPreco.textContent = formatarPreco(produto.preco);
+
+      // A classe "aberto" faz o CSS mostrar a janela
+      modal.classList.add('aberto');
+      // Leva o foco do teclado para o botão de fechar (acessibilidade)
+      modalFechar.focus();
+    }
+
+    function fecharModal() {
+      // Remove a classe: a janela some
+      modal.classList.remove('aberto');
+      produtoAberto = null;
+    }
+
+    // Botões "Detalhes": abrem a janela do produto correspondente
+    botoesDetalhes.forEach((botao) => {
+      botao.addEventListener('click', () => {
+        abrirModal(Number(botao.dataset.id));
+      });
+    });
+
+    // Botão "Fechar"
+    modalFechar.addEventListener('click', fecharModal);
+
+    // Botão "Adicionar ao carrinho" dentro da janela
+    modalComprar.addEventListener('click', () => {
+      // Só age se houver um produto aberto
+      if (produtoAberto !== null) {
+        adicionarAoCarrinho(produtoAberto.id);
+        fecharModal();
+      }
+    });
+
+    // Clicar na parte escura (fora da caixa branca) também fecha.
+    // "evento" é um objeto que descreve o que aconteceu;
+    // evento.target é o elemento que recebeu o clique.
+    modal.addEventListener('click', (evento) => {
+      if (evento.target === modal) {
+        fecharModal();
+      }
+    });
+
+    // Apertar a tecla Esc (Escape) fecha a janela.
+    // O evento 'keydown' acontece quando uma tecla é pressionada.
+    document.addEventListener('keydown', (evento) => {
+      if (evento.key === 'Escape') {
+        fecharModal();
+      }
+    });
+
+
+    // ==========================================================
+    // PASSO 8: MODO ESCURO (E MEMÓRIA COM localStorage)
+    // ==========================================================
+    // classList.toggle('escuro') funciona como um interruptor:
+    // se a classe existe, remove; se não existe, adiciona.
+    // O CSS muda as cores quando o body tem a classe "escuro".
+    //
+    // localStorage é um pequeno armário do navegador: guarda dados
+    // mesmo depois de fechar a página. Só guarda TEXTO.
+
+    // Função que ajusta o texto do botão conforme o tema atual
+    function atualizarTextoDoTema() {
+      // classList.contains devolve true se a classe existe
+      const estaEscuro = document.body.classList.contains('escuro');
+      // Operador ternário: condição ? valorSeVerdadeiro : valorSeFalso
+      botaoTema.textContent = estaEscuro ? 'Modo claro' : 'Modo escuro';
+    }
+
+    // Ao abrir a página: se o tema guardado era o escuro, aplica de novo
+    if (localStorage.getItem('tema') === 'escuro') {
+      document.body.classList.add('escuro');
+    }
+    atualizarTextoDoTema();
+
+    // Ao clicar no botão: alterna o tema e guarda a escolha
+    botaoTema.addEventListener('click', () => {
+      // toggle devolve true se a classe ficou ligada
+      const escuro = document.body.classList.toggle('escuro');
+      localStorage.setItem('tema', escuro ? 'escuro' : 'claro');
+      atualizarTextoDoTema();
+    });
+
+
+    // ==========================================================
+    // PASSO 9: OS TESTES DA SEÇÃO "INTRODUÇÃO AO JAVASCRIPT"
+    // ==========================================================
+
+    // --- TESTE 1: contador de cliques ---
+    // Variável que conta os cliques. Começa em zero.
+    let cliquesDemo = 0;
+
+    botaoDemo.addEventListener('click', () => {
+      cliquesDemo++; // soma 1 a cada clique
+
+      // if / else: o programa escolhe um caminho.
+      if (cliquesDemo === 1) {
+        resultadoDemo.textContent = 'Você clicou 1 vez!';
+      } else {
+        resultadoDemo.textContent = `Você clicou ${cliquesDemo} vezes!`;
+      }
+    });
+
+    // --- TESTE 2: ler o que o usuário digitou ---
+    botaoSaudacao.addEventListener('click', () => {
+      // .value lê o texto do campo.
+      // .trim() remove espaços do começo e do fim.
+      const nome = campoNomeDemo.value.trim();
+
+      // Se o nome estiver vazio (''), pede para digitar.
+      if (nome === '') {
+        resultadoSaudacao.textContent = 'Digite o seu nome primeiro.';
+      } else {
+        resultadoSaudacao.textContent = `Olá, ${nome}! Seja bem-vindo à ${nomeDaLoja}.`;
+      }
+    });
+
+
+    // ==========================================================
+    // PASSO 10: VALIDAR O FORMULÁRIO
+    // ==========================================================
+    // O evento 'submit' acontece quando o formulário é enviado.
+    // Por padrão, o navegador recarregaria a página.
+    // evento.preventDefault() cancela esse comportamento, e assim
+    // podemos verificar os dados antes.
+    formulario.addEventListener('submit', (evento) => {
+      evento.preventDefault();
+
+      // Lê o nome digitado, sem espaços nas pontas
+      const nome = campoNome.value.trim();
+
+      // .length conta quantas letras o texto tem
+      if (nome.length < 3) {
+        mensagemFormulario.textContent = 'Digite um nome com pelo menos 3 letras.';
+        // className troca a classe do elemento: o CSS pinta de vermelho
+        mensagemFormulario.className = 'erro';
+        return; // encerra aqui: não continua se houver erro
+      }
+
+      // Se chegou até aqui, está tudo certo
+      mensagemFormulario.textContent = `Obrigado, ${nome}! Recebemos a sua mensagem.`;
+      mensagemFormulario.className = 'sucesso';
+
+      // reset() limpa todos os campos do formulário
+      formulario.reset();
+    });
+
+    // Fim do script. Se tudo deu certo, o Console mostra a mensagem do Passo 1.
+
+  </script>
+
+</body>
+</html>
